@@ -1,0 +1,123 @@
+%%%%%
+% OS Assignment 0 Part 2
+% June 20, 2021
+% Members: 
+% Aishwarya Ghosh Bristy (ROLL SK 50)
+% Shamim Bin Zahid (ROLL SH 43)
+%%%%%
+
+\documentclass[14pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+
+\title{\textbf{CSE-3211 Operating Systems Lab\\Assignment 0 Part 2}}
+\author{\\\\Aishwarya Ghosh Bristy\\
+        Roll: SK-50\\\\
+        
+        Shamim Bin Zahid\\
+        Roll: SH-43\\\\
+        
+        Session: 2017-18(3rd Year)\\
+        Department of Computer Science and Engineering\\
+        University of Dhaka}
+\date{June, 2021}
+
+\begin{document}
+
+\maketitle
+\newpage
+
+\section{Questions with Answers}
+
+\begin{enumerate}
+    \item What is the vm system called that is configured for assignment 0?\\
+          \textbf{ans: } dumbvm\\
+          \textbf{path:} \emph{kern/arch/mips/conf/conf.arch}
+    \item Which register number is used for the stack pointer (sp) in OS/161?\\
+          \textbf{ans: } \$29\\
+          \textbf{path:} \emph{ kern/arch/mips/include/kern/regdefs.h}
+    \item What bus/busses does OS/161 support?\\
+          \textbf{ans: } LAMEbus\\
+          \textbf{path:} \emph{kern/arch/sys161/include/bus.h}
+    \item What is the difference between splhigh and spl0?\\
+          \textbf{ans: } splhigh() sets IPL to the highest value, disabling all\\
+          interrupts. spl0() sets IPL to 0, enabling all interrupts.\\
+          \textbf{path:} \emph{ kern/include/spl.h}
+     \item Why do we use typedefs like "u\_int32\_t" instead of simply saying "int"?\\
+        \textbf{ans: } Since we’re in a 32-bit platform, size\_t, ssize\_t, and ptrdiff\_t can correctly be either (unsigned) int or (unsigned) long. However, if we don’t define it to the same one gcc is using, gcc will get upset. So, in order to make sure that we really get a 32-bit unsigned integer as unsigned int depends on the platform, we use u\_int32\_t.\\
+        \textbf{path:} \emph{kern/arch/include/mips/kern/types.h}
+    \item What must be the first thing in the process control block?\\
+          \textbf{ans: } The pcb\_switchstack must be the first thing in the\\ process-control block.\\
+          \textbf{path:} \emph{kern/arch/mips/include/pcb.h}
+    \item What does splx return?\\
+          \textbf{ans: } Returns old spl level\\
+          \textbf{path:} \emph{kern/thread/spl.c}
+    \item What is the highest interrupt level?\\
+          \textbf{ans: } There are two interrupt levels, 0 and 1. 1 is defined\\ as IPL\_HIGH.\\
+          \textbf{path:} \emph{ kern/include/spl.h}
+    \item What function is called when user-level code generates a fatal fault?\\
+          \textbf{ans: } Function called when user-level code hits a fatal fault is static void kill\_curthread(vaddr\_t epc, unsigned code,vaddr\_tvaddr).\\
+          \textbf{path:} \emph{kern/arch/mips/locore/trap.c}
+    \item How frequently are hardclock interrupts generated?\\
+          \textbf{ans: } Hardclocks per second is 100Hz (\#define HZ 100)\\
+          \textbf{path:} \emph{kern/include/clock.h}
+    \item What functions comprise the standard interface to a VFS device?\\
+          \textbf{ans: } devop\_eachopen - called on each open call to allow denying the open. devop\_io - for both reads and writes (the uio indicates the\\ direction). devop\_ioctl - miscellaneous control operations.\\
+          \textbf{path:} \emph{ kern/include/device.h}
+    \item  How many characters are allowed in a volume name?\\
+          \textbf{ans: } 32 (\#define SFS\_VOLNAME\_SIZE 32 /* max length of volume name */)\\
+          \textbf{path:} \emph{kern/include/kern/sfs.h}
+    \item  How many direct blocks does an SFS file have?\\
+          \textbf{ans: } 15 (\#define SFS\_NDIRECT 15 /* \# of direct blocks in inode */)\\
+          \textbf{path:} \emph{kern/include/kern/sfs.h}
+    \item What is the standard interface to a file system (i.e., what functions must you implement a new file system)?\\
+          \textbf{ans: } fsop\_sync - Flush all dirty buffers to disk.\\
+                     fsop\_getvolname - Return volume name of filesystem.\\
+                     fsop\_getroot - Return root vnode of filesystem.\\
+                     fsop\_unmount - Attempt unmount of filesystem.\\
+          \textbf{path:} \emph{kern/include/fs.h}
+    \item What function puts a thread to sleep?\\
+          \textbf{ans: } void wchan\_sleep(struct wchan *wc, struct spinlock *lk);\\
+          \textbf{path:} \emph{kern/thread/thread.c}
+    \item How large are OS/161 pids?\\
+          \textbf{ans: } 32 bit (typedef \_\_i32 \_\_pid\_t; /* Process ID */)\\
+          \textbf{path:} \emph{kern/include/kern/types.h}
+    \item What operations can you do on a vnode?\\
+          \textbf{ans: } vop\_eachopen, vop\_reclaim, vop\_read, vop\_readlink, vop\_eachopen, vop\_reclaim, vop\_read, vop\_readlink, vop\_getdirentry, vop\_write, vop\_ioctl, vop\_stat, vop\_gettype, vop\_isseekable, vop\_fsync, vop\_mmap, vop\_truncate, vop\_namefile, vop\_creat, vop\_symlink, vop\_mkdir, vop\_link, vop\_remove, vop\_rmdir, vop\_rename, vop\_lookup, vop\_lookparent.\\
+          \textbf{path:} \emph{kern/include/vnode.h}
+    \item What is the maximum path length in OS/161?\\
+          \textbf{ans: } 1024 (/* Longest full path name */ \#define \_\_PATH\_MAX1024)\\
+          \textbf{path:} \emph{ kern/include/kern/limits.h}
+    \item What is the system call number for a reboot?\\
+          \textbf{ans: } 119 (\#define SYS\_reboot 119)\\
+          \textbf{path:} \emph{kern/include/kern/syscall.h}
+    \item Where is STDIN\_FILENO defined??\\
+          \textbf{ans: } \#define STDIN\_FILENO 0 /* Standard input */\\
+          \textbf{path:} \emph{kern/include/kern/unistd.h}
+    \item What does kmain() do?\\
+          \textbf{ans: } Kernel main : Boot up, then fork the menu thread; wait for a reboot request, and then shut down.\\
+          \textbf{path:} \emph{kern/main/main.c}
+    \item Is it OK to initialise the thread system before the scheduler? Why (not)?\\
+          \textbf{ans: } Yes. Because the scheduler bootstrap creates the run queue and the thread bootstrap initializes the first thread.\\
+          \textbf{path:} \emph{kern/thread/thread.c}
+    \item What is the vm system called that is configured for assignment 0?\\
+          \textbf{ans: } Zombies are threads that have exited but still need to have thread\_destroy called on them.\\
+          \textbf{path:} \emph{kern/thread/thread.c}
+    \item  How large is the in initial run queue?\\
+          \textbf{ans: } Though we did not find any initialization of the run queue,it seems that this line of code is an indication of run queue\\ size(curcpu->c\_runqueue.tl\_count = 0;)\\
+          \textbf{path:} \emph{kern/thread/thread.c}
+    \item What does a device name in OS/161 look like?\\
+          \textbf{ans: } The name of a device is always just "device:". The VFS layer puts in the device name for us, so we don’t need to do anything further. (e.g. "lhd0")\\
+          \textbf{path:} \emph{kern/vfs/vfslist.c}
+    \item What does a raw device name in OS/161 look like?\\
+          \textbf{ans: } Name of raw device (e.g., "lhd0raw"). Is non-NULL if and only if this device can have a filesystem mounted on it.\\
+          \textbf{path:} \emph{kern/vfs/vfslist.c}
+    \item What lock protects the vnode reference count?\\
+          \textbf{ans: } vn\_countlock\\
+          \textbf{path:} \emph{kern/vfs/vnode.c}\\
+    \item What device types are currently supported?\\
+          \textbf{ans: } Block Type and Character Type Devices.\\
+          \textbf{path:} \emph{kern/vfs/device.c}
+\end{enumerate}
+
+
+\end{document}
